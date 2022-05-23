@@ -34,13 +34,34 @@ async function run() {
             const productInfo = await productsCollection.findOne(query);
             res.send(productInfo);
         })
-
+        // Update data base in a single product
         app.post('/myorder', async (req, res) => {
             const myItems = req.body;
             const result = await myOrderCollection.insertOne(myItems);
             res.send(result);
         })
-
+        // Get single product take database show MyOrder route
+        app.get('/myorder', async (req, res) => {
+            const email = req.query.userEmail;
+            const query = { email: email }
+            const cursor = myOrderCollection.find(query);
+            const items = await cursor.toArray();
+            res.send(items)
+        });
+        // Get Singel My Order /myorder/:id
+        app.get('/myorder/:id', async (req, res) => {
+            const email = req.query.userEmail;
+            const query = { email: email }
+            const productInfo = await myOrderCollection.findOne(query);
+            res.send(productInfo);
+        })
+        // Delete Singel My Order /myorder/:id
+        app.delete('/myorder/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await myOrderCollection.deleteOne(query);
+            res.send(result);
+        })
     }
     finally {
 
