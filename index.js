@@ -19,18 +19,26 @@ async function run() {
         console.log("Data Connected");
 
         const productsCollection = client.db('computer_village').collection('products');
-
+        const myOrderCollection = client.db('computer_village').collection('myOrder');
+        // GET ALL PRODUCT IN products server
         app.get('/products', async (req, res) => {
             const query = {};
             const cursor = productsCollection.find(query);
             const products = await cursor.toArray();
             res.send(products);
         })
+        // Get Singel Product /products/:id
         app.get('/products/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const productInfo = await productsCollection.findOne(query);
             res.send(productInfo);
+        })
+
+        app.post('/myorder', async (req, res) => {
+            const myItems = req.body;
+            const result = await myOrderCollection.insertOne(myItems);
+            res.send(result);
         })
 
     }
