@@ -30,7 +30,6 @@ function verifyJWT(req, res, next) {
     });
 }
 
-
 async function run() {
     try {
         await client.connect();
@@ -102,7 +101,6 @@ async function run() {
         app.patch('/myorder/:id', verifyJWT, async (req, res) => {
             const id = req.params.id;
             const payment = req.body;
-            console.log(payment.payment.transectionId);
             const filter = { _id: ObjectId(id) };
             const updatedDoc = {
                 $set: {
@@ -139,7 +137,6 @@ async function run() {
         // Get single product take database show MyOrder route
         app.get('/myorder', verifyJWT, async (req, res) => {
             const email = req.query.email;
-            console.log(email);
             const decodedEmail = req.decoded.email;
             if (email === decodedEmail) {
                 const query = { email: email }
@@ -237,7 +234,7 @@ async function run() {
 run().catch(console.dir);
 
 app.get('/', (req, res) => {
-    res.send('Hello World!')
+    res.send('Hello Computer Village')
 })
 
 app.listen(port, () => {
