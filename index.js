@@ -33,8 +33,6 @@ function verifyJWT(req, res, next) {
 async function run() {
     try {
         await client.connect();
-        console.log("Data Connected");
-
         const productsCollection = client.db('computer_village').collection('products');
         const myOrderCollection = client.db('computer_village').collection('myOrder');
         const paymentCollection = client.db('computer_village').collection('payments');
