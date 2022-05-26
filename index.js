@@ -99,19 +99,21 @@ async function run() {
         });
 
 
-        app.patch('/myorder/:id', async (req, res) => {
+        app.patch('/myorder/:id', verifyJWT, async (req, res) => {
             const id = req.params.id;
             const payment = req.body;
+            console.log(payment.payment.transectionId);
             const filter = { _id: ObjectId(id) };
             const updatedDoc = {
                 $set: {
                     paid: true,
-                    transectionId: payment.transectionId,
+                    transactionId: payment.payment.transectionId
                 }
             }
+
             const result = await paymentCollection.insertOne(payment);
             const updatedBooking = await myOrderCollection.updateOne(filter, updatedDoc);
-            res.send(updatedDoc);
+            res.send(updatedBooking);
         })
 
         // GET ALL PRODUCT IN products server
@@ -149,13 +151,13 @@ async function run() {
             }
         });
 
-        // app.get('/myorder', async (req, res) => {
-        //     const email = req.query.email;
-        //     const query = { email: email }
-        //     const cursor = myOrderCollection.find(query);
-        //     const items = await cursor.toArray();
-        //     res.send(items)
-        // });
+        app.get('/allorder', async (req, res) => {
+            const query = {};
+            const cursor = myOrderCollection.find(query);
+            const products = await cursor.toArray();
+            res.send(products);
+        })
+
 
         // Get Singel My Order /myorder/:id
         app.get('/myorder/:id', async (req, res) => {
@@ -219,6 +221,11 @@ async function run() {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const result = await productsCollection.deleteOne(query);
+            res.send(result);
+        })
+        app.post('/products', async (req, res) => {
+            const allproducts = req.body;
+            const result = await productsCollection.insertOne(allproducts);
             res.send(result);
         })
 
