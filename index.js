@@ -53,7 +53,7 @@ async function run() {
         app.get('/admin/:email', async (req, res) => {
             const email = req.params.email;
             const user = await userCollection.findOne({ email: email })
-            const isAdmin = user.role === 'admin';
+            const isAdmin = user?.role === 'admin';
             res.send({ admin: isAdmin });
         })
 
@@ -96,7 +96,7 @@ async function run() {
         });
 
 
-        app.patch('/myorder/:id', verifyJWT, async (req, res) => {
+        app.put('/myorder/:id', verifyJWT, async (req, res) => {
             const id = req.params.id;
             const payment = req.body;
             const filter = { _id: ObjectId(id) };
@@ -197,7 +197,7 @@ async function run() {
             res.send(result);
         });
 
-        app.patch('/myorder/:id', verifyJWT, async (req, res) => {
+        app.put('/myorder/:id', verifyJWT, async (req, res) => {
             const id = req.params.id;
             const payment = req.body;
             const filter = { _id: ObjectId(id) };
