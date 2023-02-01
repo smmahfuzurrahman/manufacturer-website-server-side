@@ -235,7 +235,7 @@ app.get('/', (req, res) => {
     res.send('Computer Village')
 })
 app.get('/server', (req, res) => {
-    res.send('Hello I am server')
+    res.send('Hello I am from Server path to cheek my server')
 })
 app.listen(port, () => {
     console.log(`listening on port ${port}`)
